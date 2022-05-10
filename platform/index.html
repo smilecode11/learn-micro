@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>应用部署 - 自动部署平台</title>
+    <style>
+        .item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .item .sub-name {
+            margin-right: 8px;
+        }
+    </style>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+</head>
+
+<body>
+    <!-- 标题 -->
+    <h1>应用部署 - 通过按钮操作</h1>
+
+    <!-- 容器 -->
+    <div id="container"></div>
+
+    <script>
+        // 容器获取
+        const container = document.getElementById('container');
+
+        //  需要部署应用列表
+        const dirList = [
+            'micro-main',
+            'micro-vue2',
+            'micro-vue3',
+            'micro-react17'
+        ]
+
+        let html = ''
+
+        dirList.forEach(item => {
+            html += `
+                <div class="item">
+                    <div class="sub-name">${item}</div>
+                    <button class="publish-btn" id="${item}">发布</button>
+
+                </div>
+            `
+        })
+
+        container.innerHTML = html;
+
+        container.onclick = function (event) {
+            if (event.target.className !== 'publish-btn') return
+            $.get(`http://localhost:3001?name=${event.target.id}`).then(resp => {
+                console.log(resp)
+            }).fail(err => {
+                console.error(err)
+            })
+        }
+
+    </script>
+</body>
+
+</html>
